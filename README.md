@@ -11,6 +11,7 @@ Inspired & based on a variety of existing source code (see list below), I have d
 - [X] Capability of creating and reading ini file (to the folder where `ps1` is being executed)
 - [X] Deleting only those profiles which have been selected by the user
 - [X] Deleting all (remote) profiles
+- [X] Internal PowerShell console-based logging as well as WinForms are in English, but GUI-based logging in the textbox is in German
 
 ![delete_user_profiles](images/delete_remote_user_profiles_gui.PNG)
 
