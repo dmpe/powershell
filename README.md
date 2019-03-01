@@ -7,7 +7,6 @@ This repository contains various PowerShell scripts that have been developed ove
 
 Inspired & based on a variety of existing source code (see list below), I have developed GUI-based (WinForms) application that can simplify deleting user profiles on Windows OS. 
 
-
 - [X] Capability of creating and reading ini file (to the folder where `ps1` is being executed)
 - [X] Deleting only those profiles which have been selected by the user
 - [X] Deleting all (remote) profiles
@@ -15,4 +14,8 @@ Inspired & based on a variety of existing source code (see list below), I have d
 
 ![delete_user_profiles](images/delete_remote_user_profiles_gui.PNG)
 
-#### 
+##### Sources:
+
+- https://community.spiceworks.com/how_to/124316-delete-user-profiles-with-powershell
+- https://martin77s.wordpress.com/2018/02/14/remove-profiles-from-a-local-or-remote-computer/
+- https://www.reddit.com/r/PowerShell/comments/9enay3/delete_user_profiles_remotely/
