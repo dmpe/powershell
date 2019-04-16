@@ -1,4 +1,4 @@
-﻿#requires -version 5.0
+#requires -version 5.0
 
 Function Register-GitLabRunner {
 <#
@@ -101,7 +101,7 @@ Function Register-GitLabRunner {
             # arguments
             Mandatory = $true,
             ValueFromPipeline=$true, #  Accept values via the pipeline.
-            HelpMessage = "The unique_id, also named scope, is a unique identifier which " + 
+            HelpMessage = "The unique_id, also 'scope' or 'service name', is a unique identifier which " + 
             "describes GitLab Runner in the system.")]
             # attributes
             [alias("scope")]
@@ -128,7 +128,7 @@ Function Register-GitLabRunner {
             Mandatory = $false, 
             ValueFromPipeline=$true, 
             HelpMessage = "Enter a name of your Active Directory")]
-            [String]$Domain,
+            [String]$Domain = $env:UserDomain,
         
         [Parameter(
             Mandatory = $true,
@@ -144,9 +144,9 @@ Function Register-GitLabRunner {
             HelpMessage = "Enter a user password (of Windows Server)")]
             [alias("password", "pswd")]
             [ValidateNotNullOrEmpty()]
-            [System.Management.Automation.PSCredential]
-            [System.Management.Automation.Credential()]
-            $Passwd = [System.Management.Automation.PSCredential]::Empty,
+            #[System.Management.Automation.PSCredential]
+            #System.Management.Automation.Credential()]
+            [String]$Passwd,
 
         [Parameter(
             Mandatory = $true,
@@ -189,7 +189,6 @@ Function Register-GitLabRunner {
     )
 
     Begin {
-
         Write-Host ""
         Write-Host "Debug Information"  -ForegroundColor Yellow
         Write-Host ""
@@ -224,7 +223,7 @@ Function Register-GitLabRunner {
         $config_toml = "$Base\etc\$UniqueId.toml"
         Write-Host "Configuration TOML file is: " $config_toml -ForegroundColor DarkYellow
 
-        $builds_location = $var + "$UniqueId\build"
+        $builds_location = $var + "\$UniqueId\build"
         Write-Host "Location of build artefacts: " $builds_location -ForegroundColor DarkYellow
 
         $hostname = $env:computername
@@ -233,25 +232,34 @@ Function Register-GitLabRunner {
         Write-Host ""
         Write-Host ""
         # For testing
-        # & $Base\$RunnerName --help 
+        # & $Base\bin\$RunnerName --help 
 
-        # & $Base\$RunnerName stop --service $UniqueId
-        # & $Base\$RunnerName unregister --config $config_toml --name $runner_name --url $Site
-        # & $Base\$RunnerName uninstall --service $UniqueId
+        & $Base\bin\$RunnerName stop --service $UniqueId 
+        & $Base\bin\$RunnerName unregister --config $config_toml --name $runner_name --url $Site
+        & $Base\bin\$RunnerName uninstall --service $UniqueId
 
         Write-Host "" 
-        Write-Host "3. Step: Setup Win32 service $UniqueId" -ForegroundColor Yellow
+        Write-Host "3. Step: Setup Win32 service $runner_name" -ForegroundColor Yellow
         Write-Host ""
-        
-        #& $Base\$RunnerName install --config $config_toml --service $UniqueId --working-directory "$var\$UniqueId" --user "$domain\\$logon" --password "$Passwd"
-        Write-Host "GitLab Runner has been successfully installed!" -ForegroundColor DarkYellow
+
+        if ( -not (Test-Path $builds_location)) {
+            New-Item -Path $builds_location -ItemType Directory -ErrorAction SilentlyContinue
+            Write-Host "$builds_location has been created!" -ForegroundColor DarkYellow
+        }
+
+        try {
+          & $Base\bin\$RunnerName install --config $config_toml --service $UniqueId --working-directory "$var\$UniqueId" --user "$domain\$logon" --password "$Passwd"
+          Write-Host "GitLab Runner has been successfully installed!" -ForegroundColor DarkYellow
+        } catch {
+          Write-Host "$RunnerName cannot be installed" -ForegroundColor Red
+        }
 
         Write-Host "" 
         Write-Host "4. Step: Register runner $runner_name at $Site .." -ForegroundColor Yellow
         Write-Host ""
 
         if ( -not (Test-Path $builds_location)) {
-            # New-Item -Path $builds_location -ItemType Directory -ErrorAction SilentlyContinue
+            New-Item -Path $builds_location -ItemType Directory -ErrorAction SilentlyContinue
             Write-Host "$builds_location has been created!"
         }
         
@@ -264,30 +272,30 @@ Function Register-GitLabRunner {
         
         # worst offense
         # https://poshcode.gitbooks.io/powershell-practice-and-style/Style-Guide/Readability.html
-        Write-Host @params --non-interactive --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked $false
-        #& $Base\$RunnerName register @params --non-interactive --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked $false
-        #& $Base\$RunnerName register --non-interactive --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked $false -c $config_toml -u $Site -r $Token
-        Write-Host "GitLab Runner has been successfully registered!" -ForegroundColor DarkYellow
-    }
+        # Write-Host @params --non-interactive --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked $false
+        #& $Base\bin\$RunnerName register @params --non-interactive --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked $false
 
-    End {
+        & $Base\bin\$RunnerName register --non-interactive --config $config_toml --url $Site --registration-token $Token --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked="false"
+        Write-Host "GitLab Runner has been successfully registered!" -ForegroundColor DarkYellow
+
         Try {
-            Write-Host $ErrorActionPreference -ForegroundColor Yellow
-            $ErrorActionPreference = "Stop"; # Make all errors terminating
-            #& $Base\$RunnerName start --config $config_toml --name $runner_name --url $Site
-             Write-Host "GitLab Runner has been successfully started!" -ForegroundColor Red
+            #Write-Host $ErrorActionPreference -ForegroundColor Yellow
+            #$ErrorActionPreference = "Stop"; # Make all errors terminating
+            & $Base\bin\$RunnerName start --service $UniqueId
+            Write-Host "GitLab Runner has been successfully started!" -ForegroundColor Red
         } Catch {
             Write-Host "Caught the exception" -ForegroundColor Red
             Write-Host $Error[0].Exception 
         }
-        
+
+    }
+
+    End {
+        Write-Host "Script has been finished" -ForegroundColor DarkYellow
     }
 
 
 }
 
-
-
-Register-GitLabRunner -UniqueId "UniqueIDofRunner" -Logon "username" -Site "https://alp.gitlab.com/gitlab"  -Token "asfasfasf" -Domain "MET" -tags "domain,pages"
-
-
+$pass = ""
+Register-GitLabRunner -UniqueId "runner-invite-deployment91" -RunnerName "gitlab-runner.exe" -Logon "" -Passwd $pass -Site "https://git.google.com/gitlab/" -Shell "powershell" -Token "rPxdEGrJAyqxJ1qKHzSG" -tags "invite"
