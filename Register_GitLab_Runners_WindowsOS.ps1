@@ -28,8 +28,9 @@ Function Register-GitLabRunner {
     Example 2: https://gitlab-prod.companyName.com
 
 .PARAMETER Token
-    The parameter Token is used to authenticate with a targeted GitLab instance. 
+    The parameter (registration) Token is used to authenticate with a targeted GitLab instance. 
     This can be found in your project's or group's settings.
+
     Example: https://gitlab.com/dmpe/YOUR_project_NAME/settings/ci_cd
 
 .PARAMETER Domain
@@ -89,7 +90,6 @@ Function Register-GitLabRunner {
     Style Guide: https://poshcode.gitbooks.io/powershell-practice-and-style/
 #>
 
-
     # Here we defined a block of parameters which also have 
     # their own attributes and parameter arguments.
     # String[] = multiple parameters, String = just 1
@@ -119,7 +119,7 @@ Function Register-GitLabRunner {
         [Parameter(
             Mandatory = $true,
             ValueFromPipeline=$true, 
-            HelpMessage = "Enter a group/project Token")]
+            HelpMessage = "Enter a group/project registration Token")]
             [alias("RegToken")]
             [ValidateNotNullOrEmpty()]
             [String]$Token,
@@ -144,8 +144,6 @@ Function Register-GitLabRunner {
             HelpMessage = "Enter a user password (of Windows Server)")]
             [alias("password", "pswd")]
             [ValidateNotNullOrEmpty()]
-            #[System.Management.Automation.PSCredential]
-            #System.Management.Automation.Credential()]
             [String]$Passwd,
 
         [Parameter(
@@ -185,10 +183,11 @@ Function Register-GitLabRunner {
             HelpMessage = "Name of GitLab Runner .exe file")]
             [ValidateNotNullOrEmpty()]
             [String]$RunnerName = "gitlab-runner-windows-amd64.exe"
-            
     )
 
     Begin {
+        Write-Host $ErrorActionPreference -ForegroundColor Yellow
+        $ErrorActionPreference = "Inquire"; # Make all errors terminating, i.e. script will ask to continue.
         Write-Host ""
         Write-Host "Debug Information"  -ForegroundColor Yellow
         Write-Host ""
@@ -231,13 +230,15 @@ Function Register-GitLabRunner {
         Write-Host "Name of runner to unregister: " $runner_name -ForegroundColor DarkYellow
         Write-Host ""
         Write-Host ""
-        # For testing
-        # & $Base\bin\$RunnerName --help 
 
-        & $Base\bin\$RunnerName stop --service $UniqueId 
-        & $Base\bin\$RunnerName unregister --config $config_toml --name $runner_name --url $Site
-        & $Base\bin\$RunnerName uninstall --service $UniqueId
-
+        try {
+            & $Base\bin\$RunnerName stop --service $UniqueId
+            & $Base\bin\$RunnerName unregister --config $config_toml --name $runner_name --url $Site
+            & $Base\bin\$RunnerName uninstall --service $UniqueId
+        } catch {
+          Write-Host "$runner_name cannot be stopped, unregistered and uninstalled because it likely does not exists" -ForegroundColor Red
+          Write-Host $Error[0].Exception 
+        }
         Write-Host "" 
         Write-Host "3. Step: Setup Win32 service $runner_name" -ForegroundColor Yellow
         Write-Host ""
@@ -252,6 +253,7 @@ Function Register-GitLabRunner {
           Write-Host "GitLab Runner has been successfully installed!" -ForegroundColor DarkYellow
         } catch {
           Write-Host "$RunnerName cannot be installed" -ForegroundColor Red
+          Write-Host $Error[0].Exception 
         }
 
         Write-Host "" 
@@ -262,40 +264,24 @@ Function Register-GitLabRunner {
             New-Item -Path $builds_location -ItemType Directory -ErrorAction SilentlyContinue
             Write-Host "$builds_location has been created!"
         }
-        
-        # use splatting here - instead of ` char
-        # need for using GR short names (of parameters)
-        $params = @{ 'c' = $config_toml
-                     'u' = $Site
-                     'r' = $Token
-                   }
-        
-        # worst offense
+           
+        # potential use of splatting here, though different syntax is being passed 
+        # -c: instead of -c ""
         # https://poshcode.gitbooks.io/powershell-practice-and-style/Style-Guide/Readability.html
-        # Write-Host @params --non-interactive --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked $false
-        #& $Base\bin\$RunnerName register @params --non-interactive --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked $false
-
         & $Base\bin\$RunnerName register --non-interactive --config $config_toml --url $Site --registration-token $Token --name $runner_name --executor $executor --shell $shell --builds-dir $builds_location --tag-list $tags --locked="false"
         Write-Host "GitLab Runner has been successfully registered!" -ForegroundColor DarkYellow
 
         Try {
-            #Write-Host $ErrorActionPreference -ForegroundColor Yellow
-            #$ErrorActionPreference = "Stop"; # Make all errors terminating
             & $Base\bin\$RunnerName start --service $UniqueId
-            Write-Host "GitLab Runner has been successfully started!" -ForegroundColor Red
+            Write-Host "GitLab Runner has been successfully started!" -ForegroundColor DarkYellow
         } Catch {
             Write-Host "Caught the exception" -ForegroundColor Red
             Write-Host $Error[0].Exception 
         }
-
     }
 
     End {
         Write-Host "Script has been finished" -ForegroundColor DarkYellow
     }
 
-
 }
-
-$pass = ""
-Register-GitLabRunner -UniqueId "runner-invite-deployment91" -RunnerName "gitlab-runner.exe" -Logon "" -Passwd $pass -Site "https://git.google.com/gitlab/" -Shell "powershell" -Token "rPxdEGrJAyqxJ1qKHzSG" -tags "invite"
