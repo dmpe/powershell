@@ -2,9 +2,10 @@
 
 This repository contains various PowerShell scripts that have been developed over the time at my internships and jobs. 
 
-#### Registering GitLab Runner on Windows Server OS
+#### Registering GitLab Runner on Windows Server
 
-
+The goal is to install, register and update GitLab Runners on Windows VMs - those which cannot be put inside K8S or anything like that. 
+It has been tested with several large B2B enterprise applications.
 
 #### Removal of (remote) user profiles from Windows OS
 
