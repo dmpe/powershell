@@ -7,56 +7,56 @@
 
 #Set-StrictMode -Version Latest
 Function Out-IniFile {
-    <# 
-    .Synopsis 
-        Write hash content to INI file 
- 
-    .Description 
-        Write hash content to INI file 
- 
-    .Notes 
-        Author : Oliver Lipkau <oliver@lipkau.net> 
-        Blog : http://oliver.lipkau.net/blog/ 
-        Source : https://github.com/lipkau/PsIni 
-                      http://gallery.technet.microsoft.com/scriptcenter/ea40c1ef-c856-434b-b8fb-ebd7a76e8d91 
- 
-        #Requires -Version 2.0 
- 
-    .Inputs 
-        System.String 
-        System.Collections.IDictionary 
- 
-    .Outputs 
-        System.IO.FileSystemInfo 
- 
-    .Example 
-        Out-IniFile $IniVar "C:\myinifile.ini" 
-        ----------- 
-        Description 
-        Saves the content of the $IniVar Hashtable to the INI File c:\myinifile.ini 
- 
-    .Example 
-        $IniVar | Out-IniFile "C:\myinifile.ini" -Force 
-        ----------- 
-        Description 
-        Saves the content of the $IniVar Hashtable to the INI File c:\myinifile.ini and overwrites the file if it is already present 
- 
-    .Example 
-        $file = Out-IniFile $IniVar "C:\myinifile.ini" -PassThru 
-        ----------- 
-        Description 
-        Saves the content of the $IniVar Hashtable to the INI File c:\myinifile.ini and saves the file into $file 
- 
-    .Example 
-        $Category1 = @{“Key1”=”Value1”;”Key2”=”Value2”} 
-        $Category2 = @{“Key1”=”Value1”;”Key2”=”Value2”} 
-        $NewINIContent = @{“Category1”=$Category1;”Category2”=$Category2} 
-        Out-IniFile -InputObject $NewINIContent -FilePath "C:\MyNewFile.ini" 
-        ----------- 
-        Description 
-        Creating a custom Hashtable and saving it to C:\MyNewFile.ini 
-    .Link 
-        Get-IniContent 
+    <#
+    .Synopsis
+        Write hash content to INI file
+
+    .Description
+        Write hash content to INI file
+
+    .Notes
+        Author : Oliver Lipkau <oliver@lipkau.net>
+        Blog : http://oliver.lipkau.net/blog/
+        Source : https://github.com/lipkau/PsIni
+                      http://gallery.technet.microsoft.com/scriptcenter/ea40c1ef-c856-434b-b8fb-ebd7a76e8d91
+
+        #Requires -Version 2.0
+
+    .Inputs
+        System.String
+        System.Collections.IDictionary
+
+    .Outputs
+        System.IO.FileSystemInfo
+
+    .Example
+        Out-IniFile $IniVar "C:\myinifile.ini"
+        -----------
+        Description
+        Saves the content of the $IniVar Hashtable to the INI File c:\myinifile.ini
+
+    .Example
+        $IniVar | Out-IniFile "C:\myinifile.ini" -Force
+        -----------
+        Description
+        Saves the content of the $IniVar Hashtable to the INI File c:\myinifile.ini and overwrites the file if it is already present
+
+    .Example
+        $file = Out-IniFile $IniVar "C:\myinifile.ini" -PassThru
+        -----------
+        Description
+        Saves the content of the $IniVar Hashtable to the INI File c:\myinifile.ini and saves the file into $file
+
+    .Example
+        $Category1 = @{“Key1”=”Value1”;”Key2”=”Value2”}
+        $Category2 = @{“Key1”=”Value1”;”Key2”=”Value2”}
+        $NewINIContent = @{“Category1”=$Category1;”Category2”=$Category2}
+        Out-IniFile -InputObject $NewINIContent -FilePath "C:\MyNewFile.ini"
+        -----------
+        Description
+        Creating a custom Hashtable and saving it to C:\MyNewFile.ini
+    .Link
+        Get-IniContent
     #>
 
     [CmdletBinding()]
@@ -244,7 +244,7 @@ Set-Alias oif Out-IniFile
 #####################################
 #####################################
 #############
-############# 
+#############
 ############# This code is copied from
 ############# https://www.powershellgallery.com/packages/PsIni/1.2.0/Content/Functions%5CGet-IniContent.ps1
 #############
@@ -413,7 +413,7 @@ Set-Alias gic Get-IniContent
 ###############################################
 #########################
 #########################
-######################### 
+#########################
 ######################### Here begins the main program
 #########################
 #########################
@@ -451,15 +451,15 @@ $color2 = [System.Drawing.Color]::FromArgb(210,191,172)
 #############################################################################
 
 # Define Tooltips
-$Tooltip = New-Object System.Windows.Forms.ToolTip 
-$ShowHelp = { 
-    Switch ($this.name) { 
-        'TextBox1'  {$Tip = "Remote PC/Server name/IP"; Break} 
-        'TextBox2'  {$Tip = 'Remove UPs that were not used for more than XXX days (Optional)'; Break} 
-        'UserToSid' {$Tip = 'Type valid user SID'; Break} 
-    } 
-    $Tooltip.SetToolTip($this,$Tip) 
-} 
+$Tooltip = New-Object System.Windows.Forms.ToolTip
+$ShowHelp = {
+    Switch ($this.name) {
+        'TextBox1'  {$Tip = "Remote PC/Server name/IP"; Break}
+        'TextBox2'  {$Tip = 'Remove UPs that were not used for more than XXX days (Optional)'; Break}
+        'UserToSid' {$Tip = 'Type valid user SID'; Break}
+    }
+    $Tooltip.SetToolTip($this,$Tip)
+}
 ################################################################################
 
 $TextBox1                        = New-Object system.Windows.Forms.TextBox
@@ -471,10 +471,10 @@ $TextBox1.location               = New-Object System.Drawing.Point (7, 10)
 $TextBox1.Font                   = 'Microsoft Sans Serif,10'
 $TextBox1.Text                   = "Remote PC/Server name/IP"
 # $TextBox1.ForeColor            = 'Darkgray'
-$TextBox1.add_MouseHover($ShowHelp) 
+$TextBox1.add_MouseHover($ShowHelp)
 
 ######################################################################################
-############## 
+##############
 ############## older then x days components
 ##############
 
@@ -487,9 +487,9 @@ $TextBox2.location               = New-Object System.Drawing.Point(7,170)
 $TextBox2.Font                   = 'Microsoft Sans Serif,10'
 $TextBox2.Text                   = "Older than >= XXX days"
 $TextBox2.ForeColor              = 'Darkgray'
-$TextBox2.add_MouseHover($ShowHelp) 
+$TextBox2.add_MouseHover($ShowHelp)
 
-############## 
+##############
 ############## Outcome Box used for logging
 ##############
 
@@ -501,23 +501,23 @@ $TextBox3.height                 = 200
 $TextBox3.location               = New-Object System.Drawing.Point(380,10)
 $TextBox3.Font                   = 'Microsoft Sans Serif,10'
 $TextBox3.ReadOnly               = $true
-# $TextBox3.Text                 = "`r`n" 
+# $TextBox3.Text                 = "`r`n"
 
 ##########################################################################################
 #################          ADD + DELETE + DELETE ALL Button
 ###################################
-$ReadINI                    = New-Object System.Windows.Forms.Button 
-$ReadINI.Location           = New-Object System.Drawing.Point(245,10) 
+$ReadINI                    = New-Object System.Windows.Forms.Button
+$ReadINI.Location           = New-Object System.Drawing.Point(245,10)
 $ReadINI.width              = 100
 $ReadINI.height             = 25
-$ReadINI.Text               = ".ini read" 
+$ReadINI.Text               = ".ini read"
 $ReadINI.Font               = 'Microsoft Sans Serif,10'
 
-$WriteINI                    = New-Object System.Windows.Forms.Button 
-$WriteINI.Location           = New-Object System.Drawing.Point(245,40) 
+$WriteINI                    = New-Object System.Windows.Forms.Button
+$WriteINI.Location           = New-Object System.Drawing.Point(245,40)
 $WriteINI.width              = 100
 $WriteINI.height             = 25
-$WriteINI.Text               = ".ini write" 
+$WriteINI.Text               = ".ini write"
 $WriteINI.Font               = 'Microsoft Sans Serif,10'
 
 $ButtonAdd                         = New-Object system.Windows.Forms.Button
@@ -527,18 +527,18 @@ $ButtonAdd.height                  = 35
 $ButtonAdd.location                = New-Object System.Drawing.Point(245,80)
 $ButtonAdd.Font                    = 'Microsoft Sans Serif,10'
 
-$ButtonRemove                    = New-Object System.Windows.Forms.Button 
-$ButtonRemove.Location           = New-Object System.Drawing.Point(245,120) 
+$ButtonRemove                    = New-Object System.Windows.Forms.Button
+$ButtonRemove.Location           = New-Object System.Drawing.Point(245,120)
 $ButtonRemove.width              = 100
 $ButtonRemove.height             = 35
-$ButtonRemove.Text               = "Delete" 
+$ButtonRemove.Text               = "Delete"
 $ButtonRemove.Font               = 'Microsoft Sans Serif,10'
 
-$ButtonDeleteAll                    = New-Object System.Windows.Forms.Button 
-$ButtonDeleteAll.Location           = New-Object System.Drawing.Point(245,160) 
+$ButtonDeleteAll                    = New-Object System.Windows.Forms.Button
+$ButtonDeleteAll.Location           = New-Object System.Drawing.Point(245,160)
 $ButtonDeleteAll.width              = 100
 $ButtonDeleteAll.height             = 35
-$ButtonDeleteAll.Text               = "Delete all" 
+$ButtonDeleteAll.Text               = "Delete all"
 $ButtonDeleteAll.Font               = 'Microsoft Sans Serif,10'
 
 $ListBoxComputerNames                       = New-Object system.Windows.Forms.ListBox
@@ -546,7 +546,7 @@ $ListBoxComputerNames.name                  = "ListBoxComputerNames"
 $ListBoxComputerNames.width                 = 230
 $ListBoxComputerNames.height                = 100
 $ListBoxComputerNames.location              = New-Object System.Drawing.Point(7,40)
-$ListBoxComputerNames.SelectionMode         = "MultiExtended" 
+$ListBoxComputerNames.SelectionMode         = "MultiExtended"
 
 $Panel1                          = New-Object system.Windows.Forms.Panel
 $Panel1.height                   = 220
@@ -584,7 +584,7 @@ $ListView1                       = New-Object system.Windows.Forms.ListBox
 $ListView1.width                 = 400
 $ListView1.height                = 190
 $ListView1.location              = New-Object System.Drawing.Point(300,260)
-$ListView1.SelectionMode         = "MultiExtended" 
+$ListView1.SelectionMode         = "MultiExtended"
 
 $ButtonGET                         = New-Object system.Windows.Forms.Button
 $ButtonGET.text                    = "Get user profiles"
@@ -611,8 +611,8 @@ $ButtonDeleteALLProfiles.Font                    = 'Microsoft Sans Serif,10'
 $ButtonDeleteALLProfiles.ForeColor               = "Black"
 $ButtonDeleteALLProfiles.Enabled                 = $false
 
-$ButtonExitProgramm                    = New-Object System.Windows.Forms.Button 
-$ButtonExitProgramm.Location           = New-Object System.Drawing.Point(20,430) 
+$ButtonExitProgramm                    = New-Object System.Windows.Forms.Button
+$ButtonExitProgramm.Location           = New-Object System.Drawing.Point(20,430)
 $ButtonExitProgramm.width              = 180
 $ButtonExitProgramm.height             = 35
 $ButtonExitProgramm.Text               = "Exit"
@@ -634,17 +634,17 @@ $global:Comp = @()
 
 function add_to_list_from_ini_file {
     $FileExists = Test-Path $PSScriptRoot\$ini_configuration_file
-    # check if ini file does exist, 
+    # check if ini file does exist,
     # if it does exist, then read from ini and add to the global variable
     if($FileExists -eq $true) {
         # Write-host "it exists"
         $FileContent = Get-IniContent $PSScriptRoot\$ini_configuration_file
         $FileContent_KeyValues = $FileContent["computer_names"]
 
-        foreach ($item in $FileContent_KeyValues.keys) {  
+        foreach ($item in $FileContent_KeyValues.keys) {
             if ($global:Comp -contains $item) {
                 Write-Host "`r`nDuplicate values cannot be inserted - function add_to_list_from_ini_file"
-            } else {        
+            } else {
                 if ($global:Comp -contains $FileContent_KeyValues[$item]) {
                     Write-Host "`r`nDuplicate values cannot be inserted into global variable - function add_to_list_from_ini_file"
                 } else {
@@ -665,7 +665,7 @@ function add_to_list_from_ini_file {
         Write-Host "`r`nINI config file does NOT exist. Hence we cannot read from it"
         $TextBox3.AppendText("ini Datei existiert nicht `r`n")
     }
-    
+
 }
 
 function read_from_list_to_write_ini_file {
@@ -676,7 +676,7 @@ function read_from_list_to_write_ini_file {
 
         for ($i = 0; $i -lt $ListBoxComputerNames.Items.Count; $i++) {
             if($IPTable.ContainsValue($ListBoxComputerNames.Items[$i])) {
-            
+
             } else {
                 $IPTable["$key_server_name$i"] += $ListBoxComputerNames.Items[$i]
             }
@@ -685,15 +685,15 @@ function read_from_list_to_write_ini_file {
         Write-Host "`r`nOutput table used for creating INI config file...."
         $IPTable | Format-Table | Out-String | Write-Host
         Write-Host "`r`nEnd of the INI-based output table..."
-        
+
         # for writing the ini file
-        # here to create an ini file which stores all computer names that I have inputted. 
+        # here to create an ini file which stores all computer names that I have inputted.
         $NewINIContent = @{"computer_names" = $IPTable}
-        Out-IniFile -InputObject $NewINIContent -FilePath $PSScriptRoot\$ini_configuration_file -Force 
+        Out-IniFile -InputObject $NewINIContent -FilePath $PSScriptRoot\$ini_configuration_file -Force
     } else {
         Write-Host "`r`nWe cannot write to ini file because nothing has been added to the listbox"
         $TextBox3.AppendText("Es gib nichts zum schreiben in die ini Datei `r`n")
-    }  
+    }
 }
 
 function StartMainFunction {
@@ -704,7 +704,7 @@ function StartMainFunction {
     $WouldHaveBeenRemoved = $false
 
     foreach ($item in $ListBoxComputerNames.Items) {
-        
+
         $item = $item.Trim()
 
         if($global:Comp -contains $item) {
@@ -713,23 +713,23 @@ function StartMainFunction {
             $global:Comp += $item
         }
     }
-    
+
     if ($TextBox2.Text -eq 'Older than >= XXX days') {
         $DeleteOlderThan = 0
     } else {
         $DeleteOlderThan = $TextBox2.Text
     }
-    
+
     $today = Get-Date
-    $targetted_date_above = $today.AddDays(-1 * $DeleteOlderThan) 
+    $targetted_date_above = $today.AddDays(-1 * $DeleteOlderThan)
 
     Write-Host "`r`nCurrent date and time:   --->  $($targetted_date_above)"
     Write-Host "User's input is:         ---> " $Comp
     Write-Host "Number of days you want: ---> " $DeleteOlderThan
 
     $TextBox3.AppendText("Anfrage an: $($Comp) `r`n")
-    
-    ##################            
+
+    ##################
     foreach ($remote_pc in $Comp) {
         $remote_pc = $remote_pc.Trim()
 
@@ -737,72 +737,72 @@ function StartMainFunction {
 
             write-host "`r`nChecking UPs on this server: -> $($remote_pc)" -ForegroundColor Green
 
-            if(Test-Connection -ComputerName $remote_pc -BufferSize 16 -Count 2 -Quiet) { 
-                # use WMI to find all users with a profile on the servers 
+            if(Test-Connection -ComputerName $remote_pc -BufferSize 16 -Count 2 -Quiet) {
+                # use WMI to find all users with a profile on the servers
                 # important to make sure that only those from the last table are in
                 $ListView1.Items.Clear()
 
-                Try { 
+                Try {
                     $params = @{
                         ComputerName = $remote_pc
                         Namespace    = 'root\cimv2' # Root\Cimv2 namespace by default
                         Class        = 'Win32_UserProfile'
                     }
-                    
+
                     Get-WmiObject @params | ForEach-Object {
                         Write-Host "Printing User Profile location -> " $_.LocalPath
-        
+
                         $WouldHaveBeenRemoved = $false
                         # horrible if statement which is True (i.e. these user profiles could be deleted)
-                        # only if users are not having a well known SID (local account & NT authority), 
-                        # not being used by PC (i.e. must be logged off) and 
-                        # not whose last time used is greater than number of provided days 
+                        # only if users are not having a well known SID (local account & NT authority),
+                        # not being used by PC (i.e. must be logged off) and
+                        # not whose last time used is greater than number of provided days
                         # -and (($_.LastUseTime -and (([WMI]'').ConvertToDateTime($_.LastUseTime))) -le $targetted_date
                         # ($IgnoreLastUseTime -or (($_.LastUseTime) -and (([WMI]'').ConvertToDateTime($_.LastUseTime)) -lt $targetted_date_below)) -or
-                        if(($_.SID -notin @('S-1-5-18', 'S-1-5-19', 'S-1-5-20')) -and 
-                            (-not $_.Loaded) -and 
+                        if(($_.SID -notin @('S-1-5-18', 'S-1-5-19', 'S-1-5-20')) -and
+                            (-not $_.Loaded) -and
                             (($_.LastUseTime) -and (([WMI]'').ConvertToDateTime($_.LastUseTime)) -lt $targetted_date_above))
                             {
                                 $WouldHaveBeenRemoved = $true
                             }
-        
+
                         # create structured data object - hashtable account
                         # tries to translate SID to Domain User
                         try {
-                            $ac_value = (New-Object System.Security.Principal.SecurityIdentifier($_.Sid)).Translate([System.Security.Principal.NTAccount]).Value 
+                            $ac_value = (New-Object System.Security.Principal.SecurityIdentifier($_.Sid)).Translate([System.Security.Principal.NTAccount]).Value
                         } catch {
                             Write-Warning "`r`nCould not find SID/translate to its value "
                         }
-        
+
                         $prf = [PSCustomObject]@{
                             PSComputerName = $_.PSComputerName
                             Account = $ac_value
-                            #Path = $_.Path 
-                            LocalPath = $_.LocalPath 
+                            #Path = $_.Path
+                            LocalPath = $_.LocalPath
                             LastUseTime = if($_.LastUseTime) { ([WMI]'').ConvertToDateTime($_.LastUseTime) } else { $null }
                             Loaded = $_.Loaded
                             WouldHaveBeenRemoved = $WouldHaveBeenRemoved
-                        } 
-                        
-                        $Table += $prf                                                   
+                        }
+
+                        $Table += $prf
                     }
 
                     # or differently - if account contains metzde then
                     # sidestep - a filter - to get rid of windows users/user profiles
                     # $cleaned_Table = $Table | Where-Object {$_.LocalPath -notlike 'C:\Windows*' -and $_.LocalPath -notlike "C:\Users\Classic .NET AppPool" }
                     $cleaned_Table = $Table | Where-Object {$_.Account -like 'METZDE\*' } | Sort-Object -Property LastUseTime -Descending
-                    
+
                     $copyOfCleanedTable = $cleaned_Table
                     $copyOfCleanedTable = $copyOfCleanedTable | Where-Object {$_.WouldHaveBeenRemoved -eq $true}
 
-                    # compile the profile list and remove the path prefix, leaving just usernames 
-                    $profilelist = $profilelist + $copyOfCleanedTable.localpath -replace "C:\\users\\" 
-                    # filter usernames to show only unique values which are left - that in order to prevent displaying duplicates that come from profiles that exist on multiple computers 
-                    $uniqueusers = $profilelist | Sort-Object -Unique 
+                    # compile the profile list and remove the path prefix, leaving just usernames
+                    $profilelist = $profilelist + $copyOfCleanedTable.localpath -replace "C:\\users\\"
+                    # filter usernames to show only unique values which are left - that in order to prevent displaying duplicates that come from profiles that exist on multiple computers
+                    $uniqueusers = $profilelist | Sort-Object -Unique
 
-                    # add unique users to the combo box 
-                    ForEach($identified_profiles in $uniqueusers) { 
-                       [void] $ListView1.Items.Add($identified_profiles) 
+                    # add unique users to the combo box
+                    ForEach($identified_profiles in $uniqueusers) {
+                       [void] $ListView1.Items.Add($identified_profiles)
                     }
 
                     Write-Host "`r`n -----------------------------                 -------------------"
@@ -812,18 +812,18 @@ function StartMainFunction {
 
                     Write-Host "Unique UPs -------------------"
                     $uniqueusers | Format-Table | Out-String | Write-Host
-                } Catch { 
-                    $TextBox3.AppendText("Computer $($remote_pc) ist nicht erreichbar. `r`n")  
-                    Write-Warning "$($error[0]) "   
-                    continue   
-                }  
-                $ButtonDeleteProfiles.Enabled  = $true  
-                $ButtonDeleteALLProfiles.Enabled  = $true  
+                } Catch {
+                    $TextBox3.AppendText("Computer $($remote_pc) ist nicht erreichbar. `r`n")
+                    Write-Warning "$($error[0]) "
+                    continue
+                }
+                $ButtonDeleteProfiles.Enabled  = $true
+                $ButtonDeleteALLProfiles.Enabled  = $true
             } else {
                 $TextBox3.AppendText("Computer $($remote_pc) ist nicht erreichbar. `r`n")
                 Write-Warning -Message "Computer $($remote_pc) is unavailable"
                 $ButtonDeleteProfiles.Enabled  = $false
-                $ButtonDeleteALLProfiles.Enabled  = $false  
+                $ButtonDeleteALLProfiles.Enabled  = $false
 
             }
         }
@@ -831,68 +831,68 @@ function StartMainFunction {
 }
 
 function DeleteSelectedUserProfiles {
-    ForEach ($usr in $ListView1.SelectedItems) { 
-        #Add the path prefix back to the selected user 
-        $selecteduser = $usr 
-        $selecteduser = "C:\Users\$selecteduser" 
+    ForEach ($usr in $ListView1.SelectedItems) {
+        #Add the path prefix back to the selected user
+        $selecteduser = $usr
+        $selecteduser = "C:\Users\$selecteduser"
         Write-host $selecteduser
-        Write-host $comp 
-        
-        ForEach ($computer in $Comp) { 
+        Write-host $comp
+
+        ForEach ($computer in $Comp) {
             if($computer -notin ('', 0, "null")) {
-                Try { 
-                    Get-WmiObject -ComputerName $computer -Class Win32_UserProfile | Where-Object {$_.LocalPath -eq $selecteduser} | ForEach-Object {$_.Delete()} 
-                    Write-Host -ForegroundColor Red "$($selecteduser) has been deleted from $($computer)" 
+                Try {
+                    Get-WmiObject -ComputerName $computer -Class Win32_UserProfile | Where-Object {$_.LocalPath -eq $selecteduser} | ForEach-Object {$_.Delete()}
+                    Write-Host -ForegroundColor Red "$($selecteduser) has been deleted from $($computer)"
                     $TextBox3.AppendText("`r`n $($selecteduser) wurde vom $($computer) geloscht. `r`n")
-                } Catch [System.Management.Automation.MethodInvocationException]{ 
+                } Catch [System.Management.Automation.MethodInvocationException]{
                     Write-Host -ForegroundColor Red "ERROR: Profile is currently locked on $($computer) - please log off that user"
-                    $TextBox3.AppendText("Profil ist von $($computer) benutzt. `r`n") 
-                } Catch [System.Management.Automation.RuntimeException] { 
-                    Write-Host -ForegroundColor Yellow -BackgroundColor Blue "INFO: $($selecteduser) Profile does not exist on $($computer)" 
-                    $TextBox3.AppendText("Profil existiert am $($computer) nicht. `r`n") 
-                } Catch { 
-                    Write-Host -ForegroundColor Red "ERROR: an unknown error occoured. The error response was $error[0]" 
-                    $TextBox3.AppendText("Anderen ERROR: $error[0] `r`n") 
+                    $TextBox3.AppendText("Profil ist von $($computer) benutzt. `r`n")
+                } Catch [System.Management.Automation.RuntimeException] {
+                    Write-Host -ForegroundColor Yellow -BackgroundColor Blue "INFO: $($selecteduser) Profile does not exist on $($computer)"
+                    $TextBox3.AppendText("Profil existiert am $($computer) nicht. `r`n")
+                } Catch {
+                    Write-Host -ForegroundColor Red "ERROR: an unknown error occoured. The error response was $error[0]"
+                    $TextBox3.AppendText("Anderen ERROR: $error[0] `r`n")
                 }
             }
-        }  
+        }
     }
 }
 
 
 function DeleteAllUserProfiles {
-    ForEach ($usr in $ListView1.SelectedItems) { 
-        #Add the path prefix back to the selected user 
-        $selecteduser = $usr 
-        $selecteduser = "C:\Users\$selecteduser" 
+    ForEach ($usr in $ListView1.SelectedItems) {
+        #Add the path prefix back to the selected user
+        $selecteduser = $usr
+        $selecteduser = "C:\Users\$selecteduser"
         Write-host $selecteduser
-        Write-host $comp 
-        
-        ForEach ($computer in $Comp) { 
+        Write-host $comp
+
+        ForEach ($computer in $Comp) {
             if($computer -notin ('', 0, "null")) {
-                Try { 
-                    Get-WmiObject -ComputerName $computer -Class Win32_UserProfile | ForEach-Object {$_.Delete()} 
-                    Write-Host -ForegroundColor Red "All users has been deleted from $($computer)" 
+                Try {
+                    Get-WmiObject -ComputerName $computer -Class Win32_UserProfile | ForEach-Object {$_.Delete()}
+                    Write-Host -ForegroundColor Red "All users has been deleted from $($computer)"
                     $TextBox3.AppendText("`r`n Alle User Profile wurden vom $($computer) geloscht. `r`n")
-                } Catch [System.Management.Automation.MethodInvocationException]{ 
+                } Catch [System.Management.Automation.MethodInvocationException]{
                     Write-Host -ForegroundColor Red "ERROR: Profile is currently locked on $($computer) - please log off that user"
-                    $TextBox3.AppendText("Profil ist von $($computer) benutzt. `r`n") 
-                } Catch [System.Management.Automation.RuntimeException] { 
-                    Write-Host -ForegroundColor Yellow -BackgroundColor Blue "INFO: $($selecteduser) Profile does not exist on $($computer)" 
-                    $TextBox3.AppendText("Profil existiert am $($computer) nicht. `r`n") 
-                } Catch { 
-                    Write-Host -ForegroundColor Red "ERROR: an unknown error occoured. The error response was $error[0]" 
-                    $TextBox3.AppendText("Anderen ERROR: $error[0] `r`n") 
+                    $TextBox3.AppendText("Profil ist von $($computer) benutzt. `r`n")
+                } Catch [System.Management.Automation.RuntimeException] {
+                    Write-Host -ForegroundColor Yellow -BackgroundColor Blue "INFO: $($selecteduser) Profile does not exist on $($computer)"
+                    $TextBox3.AppendText("Profil existiert am $($computer) nicht. `r`n")
+                } Catch {
+                    Write-Host -ForegroundColor Red "ERROR: an unknown error occoured. The error response was $error[0]"
+                    $TextBox3.AppendText("Anderen ERROR: $error[0] `r`n")
                 }
             }
-        }  
+        }
     }
 }
 
 
-If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) { 
-    [System.Windows.Forms.MessageBox]::Show("It doesn't appear you have run this PowerShell session with administrative rights, the script may not function correctly. If no users are displayed please ensure you run the script again using administrive rights.")  
-} 
+If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    [System.Windows.Forms.MessageBox]::Show("It doesn't appear you have run this PowerShell session with administrative rights, the script may not function correctly. If no users are displayed please ensure you run the script again using administrive rights.")
+}
 
 
 ##############################################################################
@@ -904,7 +904,7 @@ If (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 $ButtonGET.Add_Click({ StartMainFunction })
 $ButtonDeleteProfiles.Add_Click({ DeleteSelectedUserProfiles })
 $ButtonDeleteALLProfiles.Add_Click({ DeleteAllUserProfiles })
-$ButtonExitProgramm.Add_Click({ $Form.Close() }) 
+$ButtonExitProgramm.Add_Click({ $Form.Close() })
 
 $ButtonAdd.Add_Click({
     If ((-NOT [string]::IsNullOrEmpty($TextBox1.text))) {
@@ -923,7 +923,7 @@ $ButtonRemove.Add_Click({
     While ($ListBoxComputerNames.SelectedItems.count -gt 0) {
         $ListBoxComputerNames.Items.RemoveAt($ListBoxComputerNames.SelectedIndex)
     }
-}) 
+})
 
 # delete with one click all items
 $ButtonDeleteAll.Add_Click({
@@ -931,7 +931,7 @@ $ButtonDeleteAll.Add_Click({
     Remove-Item $PSScriptRoot\$ini_configuration_file
     # clear textbox (becomes empty)
     $TextBox3.Text = ""
-}) 
+})
 
 
 $ReadINI.add_Click({
@@ -972,13 +972,13 @@ $TextBox2.Add_LostFocus({
     if ($TextBox2.Text -eq '') {
         $TextBox2.Text = 'Older than >= XXX days'
         $TextBox2.ForeColor = 'Darkgray'
-    } 
+    }
 })
 
 ################################################################################
 
 $Form.Add_Shown({$Form.Activate(), $ListView1.focus()})
-[void]$Form.ShowDialog() 
+[void]$Form.ShowDialog()
 
 
 
