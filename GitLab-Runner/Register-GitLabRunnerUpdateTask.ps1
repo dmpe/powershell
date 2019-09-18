@@ -1,4 +1,4 @@
-Function Register-FolderSystemWatcherTask {
+Function Register-GitLabRunnerUpdateTask {
     <#
     .SYNOPSIS
         Register Windows task for folder watcher
