@@ -17,4 +17,4 @@ It then starts Windows Services (i.e. Runners connected to the GitLab) again.
 
 Schema below should be a bit helpful. Otherwise, please contact me.
 
-![image](../GLRunnerUpdate.png)
+![image](../images/GLRunnerUpdate.png)
