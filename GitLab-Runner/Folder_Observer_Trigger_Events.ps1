@@ -1,12 +1,17 @@
-### Stolen and edited from
-### https://mcpmag.com/articles/2015/09/24/changes-to-a-folder-using-powershell.aspx
-
 #requires -version 5.0
-Function Set-FileSystemWatcher {
+Function Set-FolderSystemWatcher {
+    <#
+    .SYNOPSIS
+        Set folder watcher for changes
+    .DESCRIPTION
+        Stolen and edited for our needs
+    .LINK
+        https://mcpmag.com/articles/2015/09/24/changes-to-a-folder-using-powershell.aspx
+    #>
     [cmdletbinding()]
     Param (
         [parameter()]
-        [string]$Path,
+        [string]$Path="C:\ALM\runner\bin\runners",
 
         [parameter()]
         [ValidateSet('Changed', 'Created', 'Deleted', 'Renamed')]
@@ -59,14 +64,15 @@ Function Set-FileSystemWatcher {
                 }
             }
 
-            $WriteHostParams = @{
-                ForegroundColor = 'Green'
-                BackgroundColor = 'Black'
-                Object          = $Object
-            }
-            # On each event change, write to Windows Event Log
-            #Write-Host  @WriteHostParams
-            Write-EventLog -LogName Application -Source "GitLab Runner Observer" `
+            # $WriteHostParams = @{
+            #     ForegroundColor = 'Green'
+            #     BackgroundColor = 'Black'
+            #     Object          = $Object
+            # }
+            # # On each event change, write to Windows Event Log
+            # Write-Host  @WriteHostParams
+            Write-Host  "Starting folder watcher"
+            Write-EventLog -LogName Application -Source "GitLab Runner Folder Observer" `
                 -Message $Object `
                 -EventId 1
         }
