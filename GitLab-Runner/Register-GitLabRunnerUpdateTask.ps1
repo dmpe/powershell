@@ -1,11 +1,10 @@
+#requires -version 5.0
 Function Register-GitLabRunnerUpdateTask {
     <#
     .SYNOPSIS
-        Register Windows task for folder watcher
+        Register Windows task for runner updating
     .DESCRIPTION
-        Register Windows task which watches for folder changes, e.g. exe files.
-    .LINK
-
+        Register Windows task which updates exe files.
     #>
     [cmdletbinding()]
     Param (
