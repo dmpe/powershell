@@ -2,9 +2,9 @@
 Function Register-GitLabRunnerUpdateTask {
     <#
     .SYNOPSIS
-        Register Windows task for runner updating
+        Register Windows task for updating the runner
     .DESCRIPTION
-        Register Windows task which updates exe files.
+        Register Windows task which updates (replaces) exe files.
     #>
     [cmdletbinding()]
     Param (

@@ -2,7 +2,7 @@
 Function Set-FolderSystemWatcher {
     <#
     .SYNOPSIS
-        Set folder watcher for changes
+        Set folder watcher for folder changes
     .DESCRIPTION
         Stolen and edited for our needs
     .LINK

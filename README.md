@@ -1,24 +1,28 @@
-## Various PowerShell scripts
+# Various PowerShell scripts
 
-This repository contains various PowerShell scripts that have been developed over the time at my internships and jobs. 
+This repository contains various PowerShell scripts that have been developed over the time at my internships and jobs.
 
-#### Registering GitLab Runner on Windows Server
+## Registering and updating GitLab Runners on Windows Server, automatically
 
-The goal is to install, register and update GitLab Runners on Windows VMs - those which cannot be put inside K8S or anything like that. 
-It has been tested with several large B2B enterprise applications.
+**Problem:** How to update, remotely, GitLab Runners without having access to Windows Server?
 
-#### Removal of (remote) user profiles from Windows OS
+**Solution:** The goal is to install, register and setup GitLab Runner on Windows VM in a fashion which allows them to be updated automatically, e.g. through a scheduled pipeline.
+This has been successfully tested in production and was (at least initially) aimed for large B2B enterprise applications - those which cannot be put inside K8S or anything like that.
 
-Inspired & based on a variety of existing source code (see list below), I have developed GUI-based (`WinForms`) application that can simplify deleting user (remote) profiles on Windows OS. 
+These days, a better approach would be to run RPA software on target machine and code it visually...
 
-- [X] Capability of creating and reading `ini` file (to the folder where `ps1` is being executed)
-- [X] Deleting only those profiles which have been selected by the user
+## Removal of (remote) user profiles from Windows OS
+
+Inspired & based on a variety of existing source code (see list below), I have developed GUI-based (`WinForms`) application that can simplify deleting user profiles on Windows OS - remotely.
+
+- [X] Capability of creating and reading `ini` files (to the folder where `ps1` is executed)
+- [X] Deleting only those user profiles which have been selected by the admin
 - [X] Deleting all (remote) profiles
 - [X] While internal `PowerShell` console-based logging as well as `WinForms` GUI is in English, a GUI-based logging in the textbox on the right is in German
 
 ![delete_user_profiles](images/delete_remote_user_profiles_gui.PNG)
 
-##### Sources:
+### Sources:
 
 - https://community.spiceworks.com/how_to/124316-delete-user-profiles-with-powershell
 - https://martin77s.wordpress.com/2018/02/14/remove-profiles-from-a-local-or-remote-computer/

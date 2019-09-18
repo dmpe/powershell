@@ -1,97 +1,97 @@
 #requires -version 5.0
 
 Function Register-GitLabRunner {
-<#
-.SYNOPSIS
-    This "advanced PowerShell function" registers GitLab Runner (GR) on Windows Server
-    and connects it with a targeted GitLab instance.
+    <#
+    .SYNOPSIS
+        This "advanced PowerShell function" registers GitLab Runner (GR) on Windows Server
+        and connects it with a targeted GitLab instance.
 
-.DESCRIPTION
-    This script is used for registering GR on Windows Server OS.
-    It MUST be executed with "Admin" permissions!
-    It has been tested only on Windows Server >= 2016.
+    .DESCRIPTION
+        This script is used for registering GR on Windows Server OS.
+        It MUST be executed with "Admin" permissions!
+        It has been tested only on Windows Server >= 2016.
 
-.PARAMETER UniqueId
-    The parameter UniqueId is used to define a unique identifier for the GR.
-    In GitLab UI, this is called runner's "description".
-    The parameter cannot be empty string or be $null.
-    Example: gitlab-runner-for-docker-container
+    .PARAMETER UniqueId
+        The parameter UniqueId is used to define a unique identifier for the GR.
+        In GitLab UI, this is called runner's "description".
+        The parameter cannot be empty string or be $null.
+        Example: gitlab-runner-for-docker-container
 
-.PARAMETER Site
-    The parameter Site (a complete URL) is used to define a targeted GitLab instance which GR will
-    want to associate with.
-    Usually (at least in corporate environments) there are test/integration/production versions of
-    GitLab. Thus, GR must be associated with only 1 GitLab instances.
-    If you need to have multiple runners connected with several GitLab instances, execute script
-    n times.
-    Example 1: https://site.companyName.com/gitlab
-    Example 2: https://gitlab-prod.companyName.com
+    .PARAMETER Site
+        The parameter Site (a complete URL) is used to define a targeted GitLab instance which GR will
+        want to associate with.
+        Usually (at least in corporate environments) there are test/integration/production versions of
+        GitLab. Thus, GR must be associated with only 1 GitLab instances.
+        If you need to have multiple runners connected with several GitLab instances, execute script
+        n times.
+        Example 1: https://site.companyName.com/gitlab
+        Example 2: https://gitlab-prod.companyName.com
 
-.PARAMETER Token
-    The parameter (registration) Token is used to authenticate with a targeted GitLab instance.
-    This can be found in your project's or group's settings.
+    .PARAMETER Token
+        The parameter (registration) Token is used to authenticate with a targeted GitLab instance.
+        This can be found in your project's or group's settings.
 
-    Example: https://gitlab.com/dmpe/YOUR_project_NAME/settings/ci_cd
+        Example: https://gitlab.com/dmpe/YOUR_project_NAME/settings/ci_cd
 
-.PARAMETER Domain
-    The parameter Domain is used to define the name of Active Directory of the Logon user.
-    Example: MSFT
-    May also run under Build-in System account - in that case not necessary
+    .PARAMETER Domain
+        The parameter Domain is used to define the name of Active Directory of the Logon user.
+        Example: MSFT
+        May also run under Build-in System account - in that case not necessary
 
-.PARAMETER Logon
-    The parameter Logon is a user account which is used for registering GR in the system.
-    May also run under Build-in System account - in that case not necessary
+    .PARAMETER Logon
+        The parameter Logon is a user account which is used for registering GR in the system.
+        May also run under Build-in System account - in that case not necessary
 
-.PARAMETER Passwd
-    The parameter Passwd is a user password (of the Logon user).
-    May also run under Build-in System account - in that case not necessary
+    .PARAMETER Passwd
+        The parameter Passwd is a user password (of the Logon user).
+        May also run under Build-in System account - in that case not necessary
 
-.PARAMETER Tags
-    The parameter Tags is used to define a targeted GitLab Runner. It can be separated by
-    the commas, e.g. "matrix42" or "docker,pages".
+    .PARAMETER Tags
+        The parameter Tags is used to define a targeted GitLab Runner. It can be separated by
+        the commas, e.g. "matrix42" or "docker,pages".
 
-.PARAMETER Executor
-    The parameter Executor (i.e. GR) "implements a number of executors that can be used to run your
-    builds in different scenarios" [%RUNNER_EXECUTOR%]
-    If shell (which is also default option here), then on Windows Batch (cmd) by default as well.
+    .PARAMETER Executor
+        The parameter Executor (i.e. GR) "implements a number of executors that can be used to run your
+        builds in different scenarios" [%RUNNER_EXECUTOR%]
+        If shell (which is also default option here), then on Windows Batch (cmd) by default as well.
 
-    Example: shell, docker, ssh, kubernetes, etc.
-    https://docs.gitlab.com/runner/executors/
+        Example: shell, docker, ssh, kubernetes, etc.
+        https://docs.gitlab.com/runner/executors/
 
-.PARAMETER Shell
-    The parameter Shell "allows you to execute builds locally to the machine that the Runner
-    is installed".
+    .PARAMETER Shell
+        The parameter Shell "allows you to execute builds locally to the machine that the Runner
+        is installed".
 
-    Example: "cmd" (Batch/CMD by default for Windows OS)
-             alternatively: "powershell"
-    https://docs.gitlab.com/runner/shells/
-
-
-.PARAMETER Base
-    The parameter Base equals to the location "c:/ALM/runner"
-    TODO: of this PS1 file in the file system (= $PSScriptRoot).
-
-.PARAMETER RunnerName
-    The parameter RunnerName is a name of the gitlab runner exe file
-    Example: gitlab-runner-windows-amd64.exe (by default here)
-    Example: gitlab-runner.exe
+        Example: "cmd" (Batch/CMD by default for Windows OS)
+                alternatively: "powershell"
+        https://docs.gitlab.com/runner/shells/
 
 
-.LINK
-    https://docs.gitlab.com/runner/shells/
-    https://docs.gitlab.com/runner/executors/
-    https://docs.gitlab.com/runner/executors/README.html#compatibility-chart
-    https://github.com/dmpe/
+    .PARAMETER Base
+        The parameter Base equals to the location "c:/ALM/runner"
+        TODO: of this PS1 file in the file system (= $PSScriptRoot).
 
-.EXAMPLE
-    # The example below registers 1 GitLab Runner on Windows Server. This was executed with Admin rights.
-    PS C:\WINDOWS\system32> Register-GitLabRunner
+    .PARAMETER RunnerName
+        The parameter RunnerName is a name of the gitlab runner exe file
+        Example: gitlab-runner-windows-amd64.exe (by default here)
+        Example: gitlab-runner.exe
 
-.NOTES
-    Author: https://github.com/dmpe/
-    Last Edit/Version: See Git Repo
-    Style Guide: https://poshcode.gitbooks.io/powershell-practice-and-style/
-#>
+
+    .LINK
+        https://docs.gitlab.com/runner/shells/
+        https://docs.gitlab.com/runner/executors/
+        https://docs.gitlab.com/runner/executors/README.html#compatibility-chart
+        https://github.com/dmpe/
+
+    .EXAMPLE
+        # The example below registers 1 GitLab Runner on Windows Server. This was executed with Admin rights.
+        PS C:\WINDOWS\system32> Register-GitLabRunner
+
+    .NOTES
+        Author: https://github.com/dmpe/
+        Last Edit/Version: See Git Repo
+        Style Guide: https://poshcode.gitbooks.io/powershell-practice-and-style/
+    #>
 
     # Here we defined a block of parameters which also have
     # their own attributes and parameter arguments.

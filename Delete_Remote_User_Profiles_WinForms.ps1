@@ -1,7 +1,8 @@
 ﻿###################
 ###################
 ######### Copied from https://www.powershellgallery.com/packages/PsIni/2.0.5/Content/Functions%5COut-IniFile.ps1
-#########
+######### The reason for doing that was because in company we could not use nexus, artifactory or anything similar.
+######### Scroll to Line 415 to see my actual code.
 ###################
 ###################
 

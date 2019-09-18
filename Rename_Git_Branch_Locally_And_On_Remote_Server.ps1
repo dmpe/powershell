@@ -3,17 +3,17 @@
 ######################
 ###### This script should be executed manually, step by step
 ###### Use GitLab UI to control changes
-###### 
-###### This script renames git branch both locally and on the server. 
-###### It serves as "post-production-steps-for-new-release" - "Closing development steps"
 ######
-###### The principle applied here is to: 
+###### This control script renames git branch, both locally and on the server.
+###### It serves as "post-production-steps-for-new-release-spring-release"
 ######
-######  1. delete from remote
-######  2. rename locally
-######  3. push a renamed remote branch to a new one, on the server
-######  4. check if devel-$future_release exists - either locally or on remote server, 
-######  then if not, create devel-cur-$future_release and push to server
+###### The principle applied here is to:
+######
+######  1. delete branch from remote
+######  2. rename branch locally
+######  3. push a renamed branch to the server
+######  4. check if devel-$future_release exists - either locally or on remote server,
+######     then if not, create devel-cur-$future_release and push to server
 ######################
 
 ########### Edit your numbers here
@@ -44,7 +44,7 @@ $locally_new_branch_exists = git show-ref refs/heads/$dev_branch
 $remotely_new_branch_exists = git ls-remote --heads origin $dev_branch
 
 If ($locally_new_branch_exists -ne $null -and $remotely_new_branch_exists -ne $null) {
-    # use below to checkout init-file branch (e.g. it can contain some created folders, files, etc.) 
+    # use below to checkout init-file branch (e.g. it can contain some created folders, files, etc.)
     # and start a new release from there
     git checkout init-branch
     git checkout -b devel-cur-$future_release init-branch

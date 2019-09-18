@@ -2,7 +2,7 @@
 function Get-LatestRunner {
     <#
     .SYNOPSIS
-        Download latest GitLab Runner from Nexus URL
+        Downloads latest GitLab Runner e.g. from Nexus URL
     .DESCRIPTION
         This script downloads latest available GL Runner from Nexus
         and moves it to folder which has event observer on it.
@@ -25,7 +25,7 @@ function Get-LatestRunner {
 
     $check_dirs = @("$target_dir", "$target_dir\runners")
 
-    # event log source is standard across all VMs
+    # event log sources are standard across all VMs
     If (-not ([System.Diagnostics.EventLog]::SourceExists("GitLab Runner Observer"))) {
         New-EventLog -LogName Application -Source "GitLab Runner Observer"
     }
