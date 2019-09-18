@@ -1,4 +1,4 @@
-Function Register-FolderSystemWatcherService {
+Function Register-FolderSystemWatcherTask {
     <#
     .SYNOPSIS
         Register Windows task for folder watcher
