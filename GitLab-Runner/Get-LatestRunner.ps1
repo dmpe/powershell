@@ -2,7 +2,7 @@
 function Get-LatestRunner {
     <#
     .SYNOPSIS
-        Downloads latest GitLab Runner e.g. from Nexus URL
+        Download latest GitLab Runner from Nexus URL
     .DESCRIPTION
         This script downloads latest available GL Runner from Nexus
         and moves it to folder which has event observer on it.
@@ -25,7 +25,7 @@ function Get-LatestRunner {
 
     $check_dirs = @("$target_dir", "$target_dir\runners")
 
-    # event log sources are standard across all VMs
+    # event log source is standard across all VMs
     If (-not ([System.Diagnostics.EventLog]::SourceExists("GitLab Runner Observer"))) {
         New-EventLog -LogName Application -Source "GitLab Runner Observer"
     }
@@ -41,11 +41,18 @@ function Get-LatestRunner {
         }
     }
 
-    # if a veto file has been uploaded, then this has a precedence over all other files used for
+    # If a veto file has been uploaded, then this has a precedence over all other files used for
     # updating runners. Can be used for downgrading the runner.
-    # we dont need the body of the file, hence just HEAD method
-    $status_code = $(Invoke-WebRequest -UseBasicParsing "$RunnerUrl/$veto_file" -Method HEAD).StatusCode
-    $msg = "Checking for veto $veto_file....."
+    # We dont need the body of the file - HEAD method
+    try {
+        $msg = "Checking for veto $veto_file....."
+        # $status_code cannot be used here because it is only assigned if Request has been successful
+        $status_code = $(Invoke-WebRequest -UseBasicParsing "$RunnerUrl/$veto_file" -Method HEAD).StatusCode
+    } catch {
+        $msg = "A Veto file has not been found, thus continue with .recent file"
+        Write-Host $msg
+        Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
+    }
 
     if ($status_code -eq 200) {
         Write-Host $msg + " seems to be success: $status_code"
@@ -53,11 +60,6 @@ function Get-LatestRunner {
         # success, hence veto becomes target version
         $runner_version_tag = $veto_file
         $msg = "A veto file has been FOUND, thus use version from the veto file"
-        Write-Host $msg
-        Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
-    } else {
-        # $status_code cannot be used here because it is only assigned if Request has been successful
-        $msg = "A Veto file has not been found, thus continue with .recent file"
         Write-Host $msg
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
     }

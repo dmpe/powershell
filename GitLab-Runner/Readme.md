@@ -10,7 +10,7 @@ Rough steps to setup automatic exchange of runners:
 
 ==============
 
-1. Trigger start of runner BB to download latest exe file e.g. from nexus repository and move it to the folder which is being observed by the 1st Windows task.
+1. Trigger start of runner BB to download latest exe file e.g. from nexus 3 repository and move it to the folder which is being observed by the 1st Windows task.
 
 2. Runner BB is then stopped and 2nd Windows task is triggered (due to event logs) which stops all Windows services and exchanges GitLab Runner's exe file.
 It then starts Windows Services (i.e. Runners connected to the GitLab) again.

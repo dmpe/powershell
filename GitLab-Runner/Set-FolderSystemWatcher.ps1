@@ -2,7 +2,7 @@
 Function Set-FolderSystemWatcher {
     <#
     .SYNOPSIS
-        Set folder watcher for folder changes
+        Set folder watcher for changes
     .DESCRIPTION
         Stolen and edited for our needs
     .LINK
@@ -90,3 +90,4 @@ Function Set-FolderSystemWatcher {
         $Null = Register-ObjectEvent  @ObjectEventParams
     }
 }
+

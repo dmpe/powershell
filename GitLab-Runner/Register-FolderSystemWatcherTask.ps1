@@ -1,11 +1,10 @@
 #requires -version 5.0
-
 Function Register-FolderSystemWatcherTask {
     <#
     .SYNOPSIS
-        Register Windows task for folder watcher, e.g. upon system boot
+        Register Windows task for folder watcher
     .DESCRIPTION
-        Register Windows task which watches for folder changes, e.g. delete/adding exe files.
+        Register Windows task which watches for folder changes, e.g. exe files.
     #>
     [cmdletbinding()]
     Param (
