@@ -22,6 +22,13 @@ Inspired & based on a variety of existing source code (see list below), I have d
 
 ![delete_user_profiles](images/delete_remote_user_profiles_gui.PNG)
 
+## Move Maven artefacts from Nexus 2 to Nexus 3
+
+**Initial situation:** 
+We have old nexus 2 server, with access to the filesystem, which hosts maven artefacts. 
+These have to be migrated to an empty nexus 3. 
+When doing that repositories (proxy, hosted) have to be extracted from nexus 2 and re-created on nexus 3. 
+
 ### Sources:
 
 - https://community.spiceworks.com/how_to/124316-delete-user-profiles-with-powershell
