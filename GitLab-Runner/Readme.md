@@ -1,5 +1,11 @@
 # Setup automatic exchange of GitLab Runners
 
+:warning: These days, you would use GitLab's `docker executable` or `k8s`.
+However, in my case, there were unique (enterprise) constrains which made it impossible to setup more easier.
+Therefore, use with caution. 
+
+-------------------------------------------------------------------------------
+
 In order to install GitLab Runner on Windows VM, follow <https://docs.gitlab.com/runner/> guideline.
 
 Rough steps to setup automatic exchange of runners:
@@ -8,7 +14,7 @@ Rough steps to setup automatic exchange of runners:
 
 2. Install 2 Windows Tasks: 1 for folder observer `C:\ALM\runner\bin\runners` (to persist windows reboots) and another one for triggering `Update-OldRunner.ps1`.
 
-==============
+--------------------------------------------------------------------------------
 
 1. Trigger start of runner BB to download latest exe file e.g. from nexus 3 repository and move it to the folder which is being observed by the 1st Windows task.
 
