@@ -70,8 +70,8 @@ Function Set-FolderSystemWatcher {
             #     Object          = $Object
             # }
             # # On each event change, write to Windows Event Log
-            # Write-Host  @WriteHostParams
-            Write-Host  "Starting folder watcher"
+            # Write-Output  @WriteHostParams
+            Write-Output  "Starting folder watcher"
             Write-EventLog -LogName Application -Source "GitLab Runner Folder Observer" `
                 -Message $Object `
                 -EventId 1
@@ -86,7 +86,7 @@ Function Set-FolderSystemWatcher {
     ForEach ($Item in  $EventName) {
         $ObjectEventParams.EventName = $Item
         $ObjectEventParams.SourceIdentifier = "File.$($Item)"
-        Write-Host  "Starting watcher for Event: $($Item)"
+        Write-Output  "Starting watcher for Event: $($Item)"
         $Null = Register-ObjectEvent  @ObjectEventParams
     }
 }

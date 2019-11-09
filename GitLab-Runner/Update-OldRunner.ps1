@@ -42,7 +42,7 @@ function Update-OldRunner {
 
     Begin {
         $msg = "Replace GitLab Runner with the latest version from Nexus."
-        Write-Host $msg
+        Write-Output $msg
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
 
         if (Test-Path -Path $alm_path\$veto_file) {
@@ -60,7 +60,7 @@ function Update-OldRunner {
 
     Process {
         $msg = "Stopping now and replacing the .exe file."
-        Write-Host $msg
+        Write-Output $msg
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
 
         StopExistingRunnerService
@@ -74,7 +74,7 @@ function Update-OldRunner {
         StartExistingRunnerService
         # save zone
         $msg = "Finished updating the runner - now in version $last_gitlab_runner"
-        Write-Host $msg
+        Write-Output $msg
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
     }
 }

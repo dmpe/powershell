@@ -32,7 +32,7 @@ function Get-LatestRunner {
 
     If (-not ([System.Diagnostics.EventLog]::SourceExists("GitLab Runner Folder Observer"))) {
         New-EventLog -LogName Application -Source "GitLab Runner Folder Observer"
-        Write-Host "Folder Observer for Task Manager has been registered"
+        Write-Output "Folder Observer for Task Manager has been registered"
     }
 
     foreach ($el in $check_dirs) {
@@ -50,24 +50,24 @@ function Get-LatestRunner {
         $status_code = $(Invoke-WebRequest -UseBasicParsing "$RunnerUrl/$veto_file" -Method HEAD).StatusCode
     } catch {
         $msg = "A Veto file has not been found, thus continue with .recent file"
-        Write-Host $msg
+        Write-Output $msg
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
     }
 
     if ($status_code -eq 200) {
-        Write-Host $msg + " seems to be success: $status_code"
+        Write-Output  "$msg seems to be success: $status_code"
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
         # success, hence veto becomes target version
         $runner_version_tag = $veto_file
         $msg = "A veto file has been FOUND, thus use version from the veto file"
-        Write-Host $msg
+        Write-Output $msg
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
     }
 
     try {
         If (Test-Path -Path "$target_dir\$runner_version_tag") {
             $msg = "Old $runner_version_tag already exists and will be overwritten."
-            Write-Host $msg
+            Write-Output $msg
             Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
             Remove-Item -Path "$target_dir\$runner_version_tag"
         }
@@ -79,7 +79,7 @@ function Get-LatestRunner {
     }
     catch [System.Net.WebException] {
         $msg = "Files could not be downloaded successfully: $($_.Exception.Message)"
-        Write-Host $msg
+        Write-Output $msg
         Write-EventLog -LogName Application -Source "GitLab Runner Observer" -Message $msg -EventId 1
         Write-Debug $_.Exception.Response
     }
@@ -89,7 +89,7 @@ function Get-LatestRunner {
         $msg = "`r`nNew GitLab Runner Version has been downloaded to: $target_dir\runners `
                 Now moving important files to ALM\runner\bin folder
                 "
-        Write-Host $msg
+        Write-Output $msg
         # do not change here "folder observer" - it is used for runner update
         Write-EventLog -LogName Application -Source "GitLab Runner Folder Observer" -Message $msg -EventId 1
     }
