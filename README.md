@@ -25,9 +25,9 @@ Inspired & based on a variety of existing source code (see list below), I have d
 ## Move Maven artefacts from Nexus 2 to Nexus 3
 
 **Initial situation:** 
-We have old nexus 2 server, with access to the filesystem, which hosts maven artefacts. 
-These have to be migrated to an empty nexus 3. 
-When doing that repositories (proxy, hosted) have to be extracted from nexus 2 and re-created on nexus 3. 
+We have old nexus 2 server, with you having an access to the filesystem, which hosts among others `maven` artefacts. 
+The goal is migrate them to an empty nexus 3 installation, e.g. via API. 
+Moreover, when doing that, repositories (proxy & hosted) have to be extracted from nexus 2 and re-created on nexus 3. 
 
 ### Sources:
 
