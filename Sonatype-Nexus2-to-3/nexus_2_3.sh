@@ -7,8 +7,6 @@ set -eE -o pipefail
 self="$(readlink -mn "${BASH_SOURCE[0]}")"
 base="$(dirname "$(dirname "$(dirname "$self")")")"
 
-xmlst=(xmlstarlet)
-
 _setup() {
   echo "Setting up variables and scripts"
 
@@ -33,7 +31,7 @@ _setup() {
 }
 
 _download_nxt2_repositories() {
-  echo "Downloading Repositories from Nexus 2"
+  _banner "Downloading Repositories from Nexus 2"
   local _rest_endp="service/local/all_repositories"
 
   read -r -p "Nexus 2 username: " username
@@ -54,7 +52,7 @@ _download_nxt2_repositories() {
 }
 
 _download_nxt3_repositories() {
-  echo "Downloading Repositories from Nexus 3"
+  _banner "Downloading Repositories from Nexus 3"
   local _rest_endp="service/rest/v1/repositories"
 
   printf "User %s has been setup. \n" "$username"
@@ -68,7 +66,7 @@ _download_nxt3_repositories() {
 _extract_repositories_nxt3() {
   nexus3repos=($(jq -r '.[] | {name: .name|tostring} | join("")' /tmp/$nexus3file))
 
-  for repo in ${nexus3repos[@]}; do
+  for repo in "${nexus3repos[@]}"; do
     echo "$repo"
   done
 
@@ -77,33 +75,24 @@ _extract_repositories_nxt3() {
 
 _extract_repositories_nxt2() {
   nexus2repos=($(jq -r '.data[] | {id: .id|tostring} | join("")' /tmp/$nexus2filejson | tr '[:upper:]' '[:lower:]'))
+  declare -a nexus2repoInfo=($(jq -r '.data[] | [.id, .repoType, .remoteUri] | @tsv' /tmp/$nexus2filejson ))
 
-  for repo in ${nexus2repos[@]}; do
+  for repo in "${nexus2repoInfo[@]}"; do
     echo "$repo"
   done
 
   true
 }
 
-_parse_xml_print_table() {
-  echo "Print Nexus 2 Repositories"
-
-  local xpath="/repositories/data/repositories-item"
-  xmlst+=(sel --text --template --match "$xpath" --value-of "concat(id,'|',repoType,'|',remoteUri)" --nl)
-
-  $dbg "${xmlst[@]}" /tmp/$nexus2file
-  true
-}
-
 _create_target_repositories() {
-   echo "Create new (empty) repositories on the target Nexus 2"
+   _banner "Create new (empty) repositories on the target Nexus 2"
 
   # for each name in array size
   # https://unix.stackexchange.com/a/193042
 
   echo "${!nexus2repos[@]}"
 
-  for i in ${!nexus2repos[@]}; do
+  for i in "${!nexus2repos[@]}"; do
     word=${nexus2repos[$i]}
     echo "key:" "$i" "value:" "$word"
 
@@ -116,16 +105,16 @@ _create_target_repositories() {
     if [[ $repoType == "proxy" ]]; then
 
       if printf '%s\n' ${nexus3repos[@]} | grep -q "${word[@]}"; then
-        # TODO if our repo on Nexus 3 already exists && if it is not in excluded ones
+        # TODO if our repo on Nexus 3 already exists && and if it is not in excluded ones
         echo "do nothing"
       else
         echo "starting creating new repo"
-        add_nexus3_proxy_repo "$word" "$url" """ "$passwo"r"d3" "$nexus3" "$repoPolic"y"
+        add_nexus3_proxy_repo "$word" "$url" "$username3" "$password3" "$nexus3" "$repoPolicy"
       fi
 
     elif [[ $repoType == "hosted" ]]; then
 
-      echo "hosted REPO!!"
+      echo "hosted REPO!!!!!!!!!!!!!!!!!!!!!!!!!!!"
       add_nexus3_hosted_repo "$word" "$username3" "$password3" "$nexus3" "$repoPolicy"
 
     else
@@ -140,11 +129,13 @@ _delete_scripts_repos() {
   curl -GET --url "$nexus3/service/rest/v1/script" -u $username3:$password3 -H "accept: application/json" > /tmp/$nexus3scripts
   parsed_st=($(jq -r '.[] | {name: .name|tostring} | join("")' /tmp/$nexus3scripts))
 
-  for i in ${parsed_st[@]}; do
-    echo deleting $i
+  for i in "${parsed_st[@]}"; do
+    echo "Deleting $i script from Nexus3"
+
     curl -X DELETE --url "$nexus3/service/rest/v1/script/$i" \
          -H "accept: application/json" \
          -u $username3:$password3
+
   done
 }
 
@@ -154,7 +145,6 @@ _main() {
   _setup
 
   _download_nxt2_repositories
-  _parse_xml_print_table
   _extract_repositories_nxt2
 
   _download_nxt3_repositories

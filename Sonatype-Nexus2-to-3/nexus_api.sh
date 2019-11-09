@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+# set -x
 
 # Configure Nexus3 after installation
 #
@@ -21,6 +21,12 @@ function add_nexus3_proxy_repo() {
   echo "debug: " $_REPO_ID $_REPO_URL $_NEXUS_USER $_NEXUS_PWD $_NEXUS_URL
   cd /tmp
 
+  # Why this?
+  # Because when posting to Nexus 3 API, as of October 2019, there is no
+  # API for creating repositories.
+  # Therefore, we create JSON file which contains JSON-escaped content string (Groovy/Java lang)
+  # which (when executed) creates target repository.
+  # This is then used for curl command and passed to the server.
   echo '{
     "name": "'${_REPO_ID}'",
     "type": "groovy",

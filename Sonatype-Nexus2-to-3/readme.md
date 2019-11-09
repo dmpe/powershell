@@ -12,11 +12,9 @@ They should be used just as rough ideas to further work on.
 
 1. download current repos, in JSON, from 2
 
-2. parse JSON file from nexus 2
+2. parse and extract JSON data from nexus 2 file via `jq`
 
-  2.2. extract links via `jq`
-
-3. automate creation of Nexus 2 repos on Nexus 3
+3. Automatic creation of Nexus 2 repos on Nexus 3
 
 **Step 1: Repo Configuration**
 
@@ -25,7 +23,7 @@ They should be used just as rough ideas to further work on.
 
     extract id, type, url from 2 -> store in array
 
-    if type is proxy and is not in excluded=(Oracle alx_releases)
+    if type is proxy and is not in excluded
 
       check Nexus 3 with `jq` if name already exists
         if does, skip - do nothing
@@ -36,11 +34,13 @@ They should be used just as rough ideas to further work on.
     if type is hosted
       check Nexus 3 with `jq` if name already exists
 
-    if type is group
-      CREATE MANUALLY
+    # if type is group
+    #  CREATE MANUALLY !
 ```
 
 **Step 2: Move hosted artifacts to Nexus 3**
+
+Several ways are possible:
 
 - <https://gist.github.com/DarthHater/a4f2738e3bd40d242db22633b59dfd63>
 
@@ -53,6 +53,34 @@ They should be used just as rough ideas to further work on.
 Find your nexus 2 `storage` folder, navigate to the desired repository, and copy `nexus_bulk_upload.sh`
 Be careful, because it will start uploading every artefact to the nexus 3. You may want to do a clean up before.
 Call with `./nexus_bulk_upload.sh -u username -p password -r nexus3URL`
+
+Tested only on maven hosted artefacts!
+
+### Details
+
+Ultimately `nexus_bulk_upload.sh` is developed, which identifies all target files and uploads each artefact to Nexus 3 repository.
+To work properly, following folder structure may be required:
+
+```
+cd /opt/tomcat/sonatype-work/nexus/storage/<maven hosted>/
+```
+
+which can contain folders with artefacts:
+
+```
+  jboss
+  jerico
+  com
+  castor
+  javax
+  -> insert here !!! nexus_bulk_upload.sh !!!
+```
+
+Script is then executed with:
+
+```
+(do not store password with empty space) ./nexus_bulk_upload.sh -r nexus3 -u username -p <xxx>
+```
 
 ## Sources
 
